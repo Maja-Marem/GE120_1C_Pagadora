@@ -1,12 +1,16 @@
 """
+Exercise 1
 Maja Marem Jillzam B. Pagadora
-BS Geodetic Engineering - 1st Year
 2023-04953
+BS Geodetic Engineering
 """
 
 # Decimal Degrees to Degrees-Minutes-Seconds
+print("DD-DMS Conversion")
 
+# DD-DMS Input
 dd_input = 118.42069
+print("Input: " + str(dd_input))
 
 # DD-DMS Conversion
 degrees = int(dd_input)
@@ -21,8 +25,11 @@ print("DMS: " + str(degrees) + "-" + str(minutes) + "-" + str(seconds))
 
 
 # Degrees-Minutes-Seconds to Decimal Degrees
+print("DMS-DD Conversion")
 
+# DMS-DD Input
 dms_input = "118-25-14.48"
+print("Input: " + str(dms_input))
 
 # DMS-DD Conversion
 values = dms_input.split("-")
