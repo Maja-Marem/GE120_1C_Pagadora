@@ -5,7 +5,9 @@ Maja Marem Jillzam B. Pagadora
 BS Geodetic Engineering
 """
 
-print("Kindly follow the indicated format for each inputs.")
+print("")
+
+print("Kindly follow the indicated format for each input.")
 
 print("")
 
