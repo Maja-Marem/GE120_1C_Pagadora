@@ -9,7 +9,7 @@ BS Geodetic Engineering
 print("DD-DMS Conversion")
 
 # DD-DMS Input
-dd_input = float(input("Input DDD.dddddd:"))
+dd_input = float(input("Input DDD.dddddd: "))
 
 # DD-DMS Conversion
 degrees = int(dd_input)
@@ -26,7 +26,7 @@ print("DMS: " + str(degrees) + "-" + str(minutes) + "-" + str(seconds))
 print("DMS-DD Conversion")
 
 # DMS-DD Input
-dms_input = (input("Input DDD"+"-"+"MM"+"-"+"SS.ss:"))
+dms_input = (input("Input DDD"+"-"+"MM"+"-"+"SS.ss: "))
 
 # DMS-DD Conversion
 values = dms_input.split("-")
