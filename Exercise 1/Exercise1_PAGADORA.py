@@ -5,8 +5,14 @@ Maja Marem Jillzam B. Pagadora
 BS Geodetic Engineering
 """
 
+print("Kindly follow the indicated format for each inputs.")
+
+print("")
+
 # Decimal Degrees to Degrees-Minutes-Seconds
 print("DD-DMS Conversion")
+
+print("")
 
 # DD-DMS Input
 dd_input = float(input("Input DDD.dddddd: "))
@@ -21,9 +27,12 @@ seconds = round(((((dd_input - degrees)*60)-minutes)*60),2)
 # DD-DMS Output
 print("DMS: " + str(degrees) + "-" + str(minutes) + "-" + str(seconds))
 
+print("")
 
 # Degrees-Minutes-Seconds to Decimal Degrees
 print("DMS-DD Conversion")
+
+print("")
 
 # DMS-DD Input
 dms_input = (input("Input DDD"+"-"+"MM"+"-"+"SS.ss: "))
