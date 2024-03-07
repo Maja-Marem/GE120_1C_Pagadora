@@ -104,16 +104,11 @@ while True:
 print()
 
 color_print ("{:-^71}".format("-----------------------"), TextColor.BLUE)
-
 color_print (("{: ^5} {: ^10} {: ^5} {: ^20} {: ^5} {: ^15} {: ^5}". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ")),TextColor.CYAN)
-
 print ("{:-^71}".format("-----------------------"))
-
 for line in lines:
     print ("{: ^5} {: ^10} {: ^5} {: ^20} {: ^5} {: ^15} {: ^5}". format("|", line[0], "|", line[1], "|", line[2], "|"))
-
 color_print ("{:-^71}".format("-----------------------"), TextColor.BLUE)
-
 print()
 
 color_print ("{: ^65}".format("~ END ~"), TextColor.RED)
