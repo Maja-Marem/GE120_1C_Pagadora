@@ -8,11 +8,12 @@ BS Geodetic Engineering
 # LINE DESCRIPTION
 
 Start = 1
+End = 2
 lines=[]
 
 while True:
     print()
-    print("LINE", Start)
+    print("LINE " + str(Start) + "-" + str(End))
     dist = (input("Enter Line Distance: "))
     azs = float(input("Enter Azimuth from the South: ")) % 360
 
@@ -54,18 +55,19 @@ while True:
         bearing = "S " + str(dms) + " E"
 
 
-    line = ("LINE " , dist, bearing)
+    line = ("LINE " + str(Start) + "-" + str(End) , dist, bearing)
     lines.append(line)
     
     YN = (input("Add a new line? "))
     if YN == "yes" or YN.lower == "y":
         Start = Start + 1
+        End = End + 1
         continue
     else:
         break
 
-
-print ("{: ^8} {: ^8} {: ^8}". format("LINE" , "DISTANCE", "BEARING"))
+print ("{:-^80}".format("-----------------------"))
+print ("{: ^10} {: ^10} {: ^10} {: ^10} {: ^10} {: ^15} {: ^10}". format("|", "LINE" , "|", "DISTANCE", "|", "BEARING", "|"))
 for line in lines:
-    print ("{: ^8} {: ^8} {: ^8}". format(line[0], line[1], line [2]))
-print ("---END---")
+    print ("{: ^10} {: ^10} {: ^10} {: ^10} {: ^10} {: ^15} {: ^10}". format("|", line[0], "|", line[1], "|", line[2], "|"))
+print ("{:-^80}".format("----------END----------"))
