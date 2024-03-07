@@ -1,31 +1,43 @@
 """
-Exercise 1
+Exercise 2
 Maja Marem Jillzam B. Pagadora
 2023-04953
 BS Geodetic Engineering
 """
-print()
-print()
-print("LINE DESCRIPTIONS: (closed polygon - line Series)")
 
-# constants/lists
+# constants/lists/Class
+
+class TextColor:
+    RED = '\033[91m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    END = '\033[0m'
+
+def color_print(text, color):
+    print(color + text + TextColor.END)
 
 Start = 1
 End = 2
 lines=[]
+
+# title of program
+
+print()
+color_print("LINE DESCRIPTIONS: (closed polygon - line Series)", TextColor.RED)
+
+
+# main loop
 
 while True:
 
 # line description
 
     print()
-    print()
-    print("LINE " + str(Start) + "-" + str(End))
+    color_print("LINE " + str(Start) + "-" + str(End), TextColor.CYAN)
     print()
 
-    dist = round((float(input("Enter Line Distance: "))),2)
-    azs = round((float(input("Enter Azimuth from the South: ")) % 360),6)
-    print()
+    dist = round((float(input("Enter Line Distance: "))),5)
+    azs = float(input("Enter Azimuth from the South: ")) % 360
 
 # Azimuth from the South in Decimal Degrees to Bearing in DMS
     
@@ -74,9 +86,9 @@ while True:
 # Continuation / End of Loop
     
     YN = (input("Add a New line? "))
-    if YN == "yes":
+    if YN.lower() == "yes" or YN.capitalize() == "y"or YN.lower() == "ye" or YN.lower() == "yah" or YN.lower() == "yeah":
         typ = (input("Is this a closing line for a polygon ? "))
-        if typ == "yes":
+        if typ.lower() == "yes" or typ.lower() == "y" or typ.lower() == "ye" or typ.lower() == "yah" or typ.lower() == "yeah":
             Start = Start + 1
             End =  1
             continue
@@ -89,8 +101,14 @@ while True:
 
 
 print()
-print ("{:-^80}".format("-----------------------"))
-print ("{: ^10} {: ^10} {: ^10} {: ^10} {: ^10} {: ^15} {: ^10}". format("|", "LINE" , "|", "DISTANCE", "|", "BEARING", "|"))
+color_print ("{:-^71}".format("-----------------------"), TextColor.BLUE)
+color_print (("{: ^5} {: ^10} {: ^5} {: ^20} {: ^5} {: ^15} {: ^5}". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ")),TextColor.CYAN)
+print ("{:-^71}".format("-----------------------"))
 for line in lines:
-    print ("{: ^10} {: ^10} {: ^10} {: ^10} {: ^10} {: ^15} {: ^10}". format("|", line[0], "|", line[1], "|", line[2], "|"))
-print ("{:-^80}".format("--------- END ---------"))
+    print ("{: ^5} {: ^10} {: ^5} {: ^20} {: ^5} {: ^15} {: ^5}". format("|", line[0], "|", line[1], "|", line[2], "|"))
+color_print ("{:-^71}".format("-----------------------"), TextColor.BLUE)
+
+print()
+print()
+
+color_print ("{: ^65}".format("~ END ~"), TextColor.RED)
