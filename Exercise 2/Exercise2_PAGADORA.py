@@ -7,6 +7,7 @@ BS Geodetic Engineering
 
 # constants/lists/Class
 
+"class"
 class TextColor:
     RED = '\033[91m'
     BLUE = '\033[94m'
@@ -16,8 +17,11 @@ class TextColor:
 def color_print(text, color):
     print(color + text + TextColor.END)
 
+"constants"
 Start = 1
 End = 2
+
+"lists"
 lines=[]
 
 # title of program
@@ -30,7 +34,7 @@ color_print("LINE DESCRIPTIONS: (closed polygon - line Series)", TextColor.RED)
 
 while True:
 
-# line description
+    # line description
 
     print()
     color_print("LINE " + str(Start) + "-" + str(End), TextColor.CYAN)
@@ -40,7 +44,7 @@ while True:
     dist = round(distance, 6)
     azs = float(input("Enter Azimuth from the South: ")) % 360
 
-# Azimuth from the South in Decimal Degrees to Bearing in DMS
+    # Azimuth from the South in Decimal Degrees to Bearing in DMS
     
     if azs == 0:
         bearing = "Due South"
@@ -79,12 +83,12 @@ while True:
         dms = str(degrees) + "-" + str(minutes) + "-" + str(seconds)
         bearing = "S " + str(dms) + " E"
 
-# line lists input for table
+    # line lists input for table
 
     line = ("LINE " + str(Start) + "-" + str(End) , str(dist), bearing)
     lines.append(line)
 
-# Continuation / End of Loop
+    # Continuation / End of Loop
     
     YN = (input("Add a New line? "))
     if YN.lower() == "yes" or YN.capitalize() == "y"or YN.lower() == "ye" or YN.lower() == "yah" or YN.lower() == "yeah":
