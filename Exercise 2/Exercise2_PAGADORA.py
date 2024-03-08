@@ -36,7 +36,8 @@ while True:
     color_print("LINE " + str(Start) + "-" + str(End), TextColor.CYAN)
     print()
 
-    dist = round((float(input("Enter Line Distance: "))),5)
+    distance =(float(input("Enter Line Distance: ")))
+    dist = round(distance, 6)
     azs = float(input("Enter Azimuth from the South: ")) % 360
 
 # Azimuth from the South in Decimal Degrees to Bearing in DMS
