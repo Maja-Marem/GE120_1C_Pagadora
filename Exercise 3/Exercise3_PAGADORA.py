@@ -97,6 +97,11 @@ while True:
     lat = round(getLatitude(distance, azs),3)
     dep = round(getDeparture (distance, azs),3)
 
+    # line lists input for table
+
+    line = ("LINE " + str(Start) + "-" + str(End) , str(dist), B, lat, dep)
+    lines.append(line)
+
     # Continuation / End of Loop
     
     YN = (input("Add a New line? "))
