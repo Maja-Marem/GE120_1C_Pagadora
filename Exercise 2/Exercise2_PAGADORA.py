@@ -91,7 +91,7 @@ while True:
     # Continuation / End of Loop
     
     YN = (input("Add a New line? "))
-    if YN.lower() == "yes" or YN.capitalize() == "y"or YN.lower() == "ye" or YN.lower() == "yah" or YN.lower() == "yeah":
+    if YN.lower() == "yes" or YN.lower() == "y"or YN.lower() == "ye" or YN.lower() == "yah" or YN.lower() == "yeah":
         typ = (input("Is this a closing line for a polygon ? "))
         if typ.lower() == "yes" or typ.lower() == "y" or typ.lower() == "ye" or typ.lower() == "yah" or typ.lower() == "yeah":
             Start = Start + 1

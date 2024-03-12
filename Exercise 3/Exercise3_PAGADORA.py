@@ -97,15 +97,10 @@ while True:
     lat = round(getLatitude(distance, azs),3)
     dep = round(getDeparture (distance, azs),3)
 
-    # line lists input for table
-
-    line = ("LINE " + str(Start) + "-" + str(End) , str(dist), B, lat, dep)
-    lines.append(line)
-
     # Continuation / End of Loop
     
     YN = (input("Add a New line? "))
-    if YN.lower() == "yes" or YN.capitalize() == "y"or YN.lower() == "ye" or YN.lower() == "yah" or YN.lower() == "yeah":
+    if YN.lower() == "yes" or YN.lower() == "y"or YN.lower() == "ye" or YN.lower() == "yah" or YN.lower() == "yeah":
         typ = (input("Is this a closing line for a polygon ? "))
         if typ.lower() == "yes" or typ.lower() == "y" or typ.lower() == "ye" or typ.lower() == "yah" or typ.lower() == "yeah":
             Start = Start + 1
@@ -116,7 +111,8 @@ while True:
             End = End + 1
             continue
     else:
-        break    
+        break   
+ 
 
 print()
 
