@@ -89,7 +89,13 @@ while True:
 
     distance =(float(input("Enter Line Distance: ")))
     dist = round(distance, 3)
-    azs = float(input("Enter Azimuth from the South: ")) % 360
+    azs = input("Enter Azimuth from the South: ")
+
+    if "-" in azs:
+        degrees, minutes, seconds = azs.split("-")
+        azs = int(degrees) + (int(minutes)/60) + (int(seconds)/3600)
+    else:
+        azs = float(azs) % 360
 
     # LatDep Bearing
     
