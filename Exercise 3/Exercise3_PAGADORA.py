@@ -18,7 +18,7 @@ End = 2
 
 # "lists"
 lines=[]
-from math import cos, sin, radians
+from math import cos, sin, radians, sqrt, exp2
 
 # Functions
 
@@ -87,8 +87,7 @@ while True:
     color_print("LINE " + str(Start) + "-" + str(End), TextColor.CYAN)
     print()
 
-    distance =(float(input("Enter Line Distance: ")))
-    dist = round(distance, 3)
+    dist =(float(input("Enter Line Distance: ")))
     azs = input("Enter Azimuth from the South: ")
 
     if "-" in azs:
@@ -100,13 +99,17 @@ while True:
     # LatDep Bearing
     
     B = azimuthToBearing(azs)
-    lat = round(getLatitude(distance, azs),3)
-    dep = round(getDeparture (distance, azs),3)
+    lat = getLatitude(dist, azs)
+    dep = getDeparture (dist, azs)
 
     # line lists input for table
 
-    line = ("LINE " + str(Start) + "-" + str(End) , str(dist), B, lat, dep)
+    line = [int(dist), int(lat), int(dep)]
     lines.append(line)
+
+    Tline = ["LINE " + str(Start) + "-" + str(End) , str(round(dist, 3)), B, str(round(lat,3)), str(round(dep,3))]
+    Tline.append(Tline)
+
 
     # Continuation / End of Loop
     
@@ -127,12 +130,33 @@ while True:
 
 print()
 
-color_print ("{:-^150}".format("-----------------------"), TextColor.BLUE)
+color_print ("{:-^100}".format("-----------------------"), TextColor.BLUE)
 color_print (("{: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^15} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ", "Latitude", " ", "Departure", " ")),TextColor.CYAN)
-print ("{:-^150}".format("-----------------------"))
+print ("{:-^100}".format("-----------------------"))
 for line in lines:
-    print ("{: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^15} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format("|", line[0], "|", line[1], "|", line[2], "|", line[3], "|", line[4], "|"))
-color_print ("{:-^150}".format("-----------------------"), TextColor.BLUE)
+    print ("{: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^15} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format("|", Tline[0], "|", Tline[1], "|", Tline[2], "|", Tline[3], "|", Tline[4], "|"))
+color_print ("{:-^100}".format("-----------------------"), TextColor.BLUE)
 print()
+
+
+D = 0
+for line in lines:
+    D += line[0]
+
+
+LatSum = 0
+for line in lines:
+    LatSum += line[1]
+
+DepSum = 0
+for line in lines:
+    DepSum += line[2]
+
+
+LEC = sqrt(exp2(LatSum) + exp2(DepSum))
+print("LEC: " + str(LEC))
+
+REC = round(D/LEC, -3)
+print("REC: " + "1 : " + str(REC))
 
 color_print ("{: ^150}".format("~ END ~"), TextColor.RED)
