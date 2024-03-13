@@ -18,7 +18,7 @@ End = 2
 
 # "lists"
 lines=[]
-from math import cos, sin, radians, sqrt, exp2
+from math import cos, sin, radians, sqrt, exp2, floor
 
 # Functions
 
@@ -126,18 +126,8 @@ while True:
             continue
     else:
         break   
- 
 
-print()
-
-color_print ("{:-^100}".format("-----------------------"), TextColor.BLUE)
-color_print (("{: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^15} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ", "Latitude", " ", "Departure", " ")),TextColor.CYAN)
-print ("{:-^100}".format("-----------------------"))
-for line in lines:
-    print ("{: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^15} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format("|", Tline[0], "|", Tline[1], "|", Tline[2], "|", Tline[3], "|", Tline[4], "|"))
-color_print ("{:-^100}".format("-----------------------"), TextColor.BLUE)
-print()
-
+# Sum of Distances, Latitudes, Departures
 
 D = 0
 for line in lines:
@@ -153,10 +143,22 @@ for line in lines:
     DepSum += line[2]
 
 
+print()
+
+color_print ("{:-^150}".format("-----------------------"), TextColor.BLUE)
+color_print (("{: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^15} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ", "Latitude", " ", "Departure", " ")),TextColor.CYAN)
+print ("{:-^150}".format("-----------------------"))
+for line in lines:
+    print ("{: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^15} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format("|", Tline[0], "|", Tline[1], "|", Tline[2], "|", Tline[3], "|", Tline[4], "|"))
+color_print ("{:-^100}".format("-----------------------"), TextColor.BLUE)
+print()
+
+# LEC REC CALCULATIONS
+
 LEC = sqrt(exp2(LatSum) + exp2(DepSum))
 print("LEC: " + str(LEC))
 
-REC = round(D/LEC, -3)
+REC = floor(D/LEC/100)*100
 print("REC: " + "1 : " + str(REC))
 
 color_print ("{: ^150}".format("~ END ~"), TextColor.RED)
