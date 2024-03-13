@@ -14,6 +14,7 @@ class TextColor:
     CYAN = '\033[96m'
     END = '\033[0m'
 
+"function"
 def color_print(text, color):
     print(color + text + TextColor.END)
 
