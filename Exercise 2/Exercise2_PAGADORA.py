@@ -45,7 +45,7 @@ while True:
     dist = round(distance, 6)
     azs = input("Enter Azimuth from the South: ")
 
-    # Azimuth from the South in Decimal Degrees to Bearing in DMS
+    # Azimuth from the South
     
     if "-" in azs:
         degrees, minutes, seconds = azs.split("-")
