@@ -42,10 +42,16 @@ while True:
 
     distance =(float(input("Enter Line Distance: ")))
     dist = round(distance, 6)
-    azs = float(input("Enter Azimuth from the South: ")) % 360
+    azs = input("Enter Azimuth from the South: ")
 
     # Azimuth from the South in Decimal Degrees to Bearing in DMS
     
+    if "-" in azs:
+        degrees, minutes, seconds = azs.split("-")
+        azs = int(degrees) + (int(minutes)/60) + (int(seconds)/3600)
+    else:
+        azs = float(azs) % 360
+
     if azs == 0:
         bearing = "Due South"
     elif azs > 0 and azs < 90:
