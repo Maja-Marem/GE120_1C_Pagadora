@@ -49,7 +49,7 @@ while True:
     
     if "-" in azs:
         degrees, minutes, seconds = azs.split("-")
-        azs = int(degrees) + (int(minutes)/60) + (int(seconds)/3600)
+        azs = int(degrees) + (int(minutes)/60) + (float(seconds)/3600)
     else:
         azs = float(azs) % 360
 

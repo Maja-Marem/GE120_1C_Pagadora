@@ -15,9 +15,17 @@ class TextColor:
 # "constants"
 Start = 1
 End = 2
+D = 0
+LatSum = 0
+DepSum = 0
 
 # "lists"
-lines=[]
+lines = []
+ratios = []
+cLat = []
+cDep = []
+corrs = []
+
 from math import cos, sin, radians, sqrt, exp2, floor
 
 # Functions
@@ -79,6 +87,14 @@ def azimuthToBearing(azs):
         bearing = "S " + str(dms) + " E"
         return bearing
     
+def getclat(ratio, lat):
+    corL = -(ratio)*lat
+    return corL
+
+def getcdep(ratio, dep):
+    corD = -(ratio)*dep
+    return corD
+
 while True:
 
     # line description
@@ -92,7 +108,7 @@ while True:
 
     if "-" in azs:
         degrees, minutes, seconds = azs.split("-")
-        azs = int(degrees) + (int(minutes)/60) + (int(seconds)/3600)
+        azs = int(degrees) + (int(minutes)/60) + (float(seconds)/3600)
     else:
         azs = float(azs) % 360
 
@@ -104,18 +120,14 @@ while True:
 
     # line lists input for table
 
-    line = [int(dist), int(lat), int(dep)]
+    line = ["LINE " + str(Start) + "-" + str(End) , dist, B, lat, dep]
     lines.append(line)
-
-    Tline = ["LINE " + str(Start) + "-" + str(End) , str(round(dist, 3)), B, str(round(lat,3)), str(round(dep,3))]
-    Tline.append(Tline)
-
 
     # Continuation / End of Loop
     
     YN = (input("Add a New line? "))
     if YN.lower() == "yes" or YN.lower() == "y"or YN.lower() == "ye" or YN.lower() == "yah" or YN.lower() == "yeah":
-        typ = (input("Is this a closing line for a polygon ? "))
+        typ = (input("Will the new line be the closing line for a traverse ? "))
         if typ.lower() == "yes" or typ.lower() == "y" or typ.lower() == "ye" or typ.lower() == "yah" or typ.lower() == "yeah":
             Start = Start + 1
             End =  1
@@ -125,40 +137,45 @@ while True:
             End = End + 1
             continue
     else:
-        break   
+        break
 
-# Sum of Distances, Latitudes, Departures
-
-D = 0
 for line in lines:
-    D += line[0]
-
-
-LatSum = 0
+    D += line[1]
 for line in lines:
-    LatSum += line[1]
-
-DepSum = 0
+    LatSum += line[3]
 for line in lines:
-    DepSum += line[2]
+    DepSum += line[4]
 
+for i in range(len(lines)):
+    ratio = lines[i][1]/D
+    ratios.append(ratio)
+
+for i in range(len(ratios)):
+    clat = getclat(ratios[i], LatSum)
+    cdep = getcdep(ratios[i], DepSum)
+
+    cLat.append(clat)
+    cDep.append(cdep)
+        
+LEC = sqrt(exp2(LatSum) + exp2(DepSum))
+REC = floor((D/LEC)/100)*100
 
 print()
-
 color_print ("{:-^150}".format("-----------------------"), TextColor.BLUE)
-color_print (("{: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^15} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ", "Latitude", " ", "Departure", " ")),TextColor.CYAN)
+
+color_print (("{: ^5} {: ^6} {: ^5} {: ^7} {: ^5} {: ^15} {: ^5} {: ^7} {: ^5} {: ^7} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ", "Latitude", " ", "Departure", " ", "cLat", " ", "cDep", " ")),TextColor.CYAN)
+
 print ("{:-^150}".format("-----------------------"))
 for line in lines:
-    print ("{: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^15} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format("|", Tline[0], "|", Tline[1], "|", Tline[2], "|", Tline[3], "|", Tline[4], "|"))
-color_print ("{:-^100}".format("-----------------------"), TextColor.BLUE)
+    print ("{: ^5} {: ^6} {: ^5} {: ^7} {: ^5} {: ^15} {: ^5} {: ^7} {: ^5} {: ^7} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format("|", line[0], "|", round(line[1],3), "|", line[2], "|", round(line[3],3), "|", round(line[4],3), "|", round(clat,5), "|", round(cdep,5), "|"))
+
+color_print ("{:-^150}".format("-----------------------"), TextColor.BLUE)
 print()
 
 # LEC REC CALCULATIONS
 
-LEC = sqrt(exp2(LatSum) + exp2(DepSum))
 print("LEC: " + str(LEC))
 
-REC = floor(D/LEC/100)*100
 print("REC: " + "1 : " + str(REC))
 
 color_print ("{: ^150}".format("~ END ~"), TextColor.RED)
