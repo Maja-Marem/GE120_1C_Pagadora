@@ -5,7 +5,6 @@ Maja Marem Jillzam B. Pagadora
 BS Geodetic Engineering
 """
 # class
-
 class TextColor:
     RED = '\033[91m'
     BLUE = '\033[94m'
@@ -22,14 +21,17 @@ DepSum = 0
 # "lists"
 lines = []
 ratios = []
-cLat = []
-cDep = []
+clat = []
+cdep = []
+ADJLat = []
+ADJDep = []
 corrs = []
+ADJDis = []
+ADJB = []
 
-from math import cos, sin, radians, sqrt, exp2, floor
+from math import cos, sin, atan, radians, degrees, sqrt, exp2, floor
 
 # Functions
-
 def color_print(text, color):
     print(color + text + TextColor.END)
 
@@ -86,19 +88,31 @@ def azimuthToBearing(azs):
         dms = str(degrees) + "-" + str(minutes) + "-" + str(seconds)
         bearing = "S " + str(dms) + " E"
         return bearing
-    
-def getclat(ratio, lat):
-    corL = -(ratio)*lat
+
+def getclat(rat, lat):
+    corL = -(rat)*lat
     return corL
 
-def getcdep(ratio, dep):
-    corD = -(ratio)*dep
+def getcdep(rat, dep):
+    corD = -(rat)*dep
     return corD
 
+def BalL(Lat, corL):
+    AdjL = corL + Lat
+    return AdjL
+
+def BalD(Dep, corD):
+    AdjD = Dep + corD
+    return AdjD
+
+def AdjDist(LAT, DEP):
+    distan = sqrt(exp2(LAT) + exp2(DEP))
+    return distan
+
+# MAIN LOOP
 while True:
 
-    # line description
-
+# line description
     print()
     color_print("LINE " + str(Start) + "-" + str(End), TextColor.CYAN)
     print()
@@ -112,19 +126,16 @@ while True:
     else:
         azs = float(azs) % 360
 
-    # LatDep Bearing
-    
+# LatDep Bearing
     B = azimuthToBearing(azs)
     lat = getLatitude(dist, azs)
     dep = getDeparture (dist, azs)
 
-    # line lists input for table
-
+# line lists input for table
     line = ["LINE " + str(Start) + "-" + str(End) , dist, B, lat, dep]
     lines.append(line)
 
-    # Continuation / End of Loop
-    
+# Continuation / End of Loop
     YN = (input("Add a New line? "))
     if YN.lower() == "yes" or YN.lower() == "y"or YN.lower() == "ye" or YN.lower() == "yah" or YN.lower() == "yeah":
         typ = (input("Will the new line be the closing line for a traverse ? "))
@@ -137,45 +148,78 @@ while True:
             End = End + 1
             continue
     else:
+    # TOTAL Distance, Latitude, Departure
+        for line in lines:
+            D += line[1]
+        for line in lines:
+            LatSum += line[3]
+        for line in lines:
+            DepSum += line[4]
+
+    # For Corrections
+        for i in range(len(lines)):
+            ratio = lines[i][1]/D
+            ratios.append(ratio)
+
+        for i in range(len(ratios)):
+            cl = getclat(ratios[i], LatSum)
+            clat.append(cl) 
+
+            cd = getcdep(ratios[i], DepSum)
+            cdep.append(cd)
+
+        for i in range(len(lines)) and range(len(clat)):
+            AdjLat = BalL(lines[i][3], clat[i])
+            ADJLat.append(AdjLat)
+
+        for i in range(len(lines)) and range(len(cdep)):
+            AdjDep = BalD(lines[i][4], cdep[i])
+            ADJDep.append(AdjDep)
+
+        for i in range(len(ADJLat)) and range(len(ADJDep)):
+            Adj_distance = AdjDist(ADJLat[i], ADJDep[i])
+
+        for i in range(len(lines)) and range(len(clat)) and range(len(cdep)) and range(len(ADJLat)) and range(len(ADJDep)):
+            corr = (lines[i][0], clat[i], cdep[i], ADJLat[i], ADJDep[i],)
+            corrs.append(corr)
         break
 
-for line in lines:
-    D += line[1]
-for line in lines:
-    LatSum += line[3]
-for line in lines:
-    DepSum += line[4]
-
-for i in range(len(lines)):
-    ratio = lines[i][1]/D
-    ratios.append(ratio)
-
-for i in range(len(ratios)):
-    clat = getclat(ratios[i], LatSum)
-    cdep = getcdep(ratios[i], DepSum)
-
-    cLat.append(clat)
-    cDep.append(cdep)
-        
+# ERRORS OF CLOSURE - Calculating LEC AND REC
 LEC = sqrt(exp2(LatSum) + exp2(DepSum))
-REC = floor((D/LEC)/100)*100
+REC = round((abs(D/LEC)), -3)
 
+
+# PRINT Line tables
+    
 print()
-color_print ("{:-^150}".format("-----------------------"), TextColor.BLUE)
+color_print ("{:-^88}".format("-----------------------"), TextColor.BLUE)
 
-color_print (("{: ^5} {: ^6} {: ^5} {: ^7} {: ^5} {: ^15} {: ^5} {: ^7} {: ^5} {: ^7} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ", "Latitude", " ", "Departure", " ", "cLat", " ", "cDep", " ")),TextColor.CYAN)
+color_print (("{: ^5} {: ^6} {: ^5} {: ^7} {: ^5} {: ^15} {: ^5} {: ^7} {: ^5} {: ^10} {: ^5} ". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ", "Latitude", " ", "Departure", " ", "cLat", " ", "cDep", " ")),TextColor.CYAN)
 
-print ("{:-^150}".format("-----------------------"))
+print ("{:-^88}".format("-----------------------"))
 for line in lines:
-    print ("{: ^5} {: ^6} {: ^5} {: ^7} {: ^5} {: ^15} {: ^5} {: ^7} {: ^5} {: ^7} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format("|", line[0], "|", round(line[1],3), "|", line[2], "|", round(line[3],3), "|", round(line[4],3), "|", round(clat,5), "|", round(cdep,5), "|"))
+    print ("{: ^5} {: ^6} {: ^5} {: ^7} {: ^5} {: ^15} {: ^5} {: ^7} {: ^5} {: ^10} {: ^5}". format("|", line[0], "|", round(line[1],3), "|", line[2],"|", round(line[3],3), "|", round(line[4],3), "|"))
 
-color_print ("{:-^150}".format("-----------------------"), TextColor.BLUE)
+color_print ("{:-^88}".format("-----------------------"), TextColor.BLUE)
 print()
 
-# LEC REC CALCULATIONS
+# LEC REC CALCULATIONS2
+
+print()
 
 print("LEC: " + str(LEC))
-
 print("REC: " + "1 : " + str(REC))
 
-color_print ("{: ^150}".format("~ END ~"), TextColor.RED)
+print()
+color_print ("{:-^92}".format("-----------------------"), TextColor.BLUE)
+
+color_print(("{: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format(" ", "LINE", " ", "cLat", " ", "cDep", " ", "Adj Lat", " ", "Adj Dep", " ")), TextColor.CYAN)
+print ("{:-^92}".format("-----------------------"))
+for corr in corrs:
+    print("{: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format("|", corr[0], "|", round(corr[1],5), "|", round(corr[2],5), "|", round(corr[3],3), "|", round(corr[4],3), "|"))
+
+color_print ("{:-^92}".format("-----------------------"), TextColor.BLUE)
+
+print()
+
+color_print ("{: ^92}".format("~ END ~"), TextColor.RED)
