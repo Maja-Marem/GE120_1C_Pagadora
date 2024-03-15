@@ -82,48 +82,48 @@ def azimuthToBearing(azs):
         bearing = "Due South"
     elif azs > 0 and azs < 90:
         az = azs
-        degrees = int(az)
-        minutes = int((az - degrees)*60)
-        seconds = round(((((az - degrees)*60)-minutes)*60),2)
-        dms = str(degrees) + "-" + str(minutes) + "-" + str(seconds)
+        degs = int(az)
+        mins = int((az - degs)*60)
+        secs = round(((((az - degs)*60)-mins)*60),2)
+        dms = str(degs) + "-" + str(mins) + "-" + str(secs)
         bearing = "S " + str(dms) + " W"
     elif azs == 90:
         bearing = "Due West"
     elif azs > 90 and azs < 180:
         az = 180 - azs
-        degrees = int(az)
-        minutes = int((az - degrees)*60)
-        seconds = round(((((az - degrees)*60)-minutes)*60),2)
-        dms = str(degrees) + "-" + str(minutes) + "-" + str(seconds)
+        degs = int(az)
+        mins = int((az - degs)*60)
+        secs = round(((((az - degs)*60)-mins)*60),2)
+        dms = str(degs) + "-" + str(mins) + "-" + str(secs)
         bearing = "N " + str(dms) + " W"
     elif azs == 180:
         bearing = "Due North"
     elif azs > 180 and azs < 270:
         az = azs - 180
-        degrees = int(az)
-        minutes = int((az - degrees)*60)
-        seconds = round(((((az - degrees)*60)-minutes)*60),2)
-        dms = str(degrees) + "-" + str(minutes) + "-" + str(seconds)
+        degs = int(az)
+        mins = int((az - degs)*60)
+        secs = round(((((az - degs)*60)-mins)*60),2)
+        dms = str(degs) + "-" + str(mins) + "-" + str(secs)
         bearing = "N " + str(dms) + " E"
     elif azs == 270:
         bearing = "Due East"
     else:
         az = 360 - azs
-        degrees = int(az)
-        minutes = int((az - degrees)*60)
-        seconds = round(((((az - degrees)*60)-minutes)*60),2)
-        dms = str(degrees) + "-" + str(minutes) + "-" + str(seconds)
+        degs = int(az)
+        mins = int((az - degs)*60)
+        secs = round(((((az - degs)*60)-mins)*60),2)
+        dms = str(degs) + "-" + str(mins) + "-" + str(secs)
         bearing = "S " + str(dms) + " E"
     return bearing
 
-def getclat(d, D, lat):
+def getclat(d, Dis, lat):
     'Calculates the Correction in Latitude of each line of the traverse'
-    corL = -(d/D)*lat
+    corL = -(d/Dis)*lat
     return corL
 
-def getcdep(d, D, dep):
+def getcdep(d, Dis, dep):
     'Calculates the Correction in Departure of a line of the traverse'
-    corD = -(d/D)*dep
+    corD = -(d/Dis)*dep
     return corD
 
 def BalL(Lat, corL):
@@ -144,31 +144,31 @@ def AdjDist(LAT, DEP):
 def AdjBearing(L, D):
     'Calculates the adjusted Line distance'
     if L> 0 and D > 0:
-        D = degrees(atan(abs(D/L)))
-        deg = int(D)
-        min = int((D - deg)*60)
-        sec = round(((((D - deg)*60)-min)*60),2)
+        Dg = degrees(atan(abs(D/L)))
+        deg = int(Dg)
+        min = int((Dg - deg)*60)
+        sec = round(((((Dg - deg)*60)-min)*60),2)
         b = str(deg) + "-" + str(min) + "-" + str(sec)
         NB = "N " + str(b) + " E"
     elif L > 0 and D < 0:
-        D = degrees(atan(abs(D/L)))
-        deg = int(D)
-        min = int((D - deg)*60)
-        sec = round(((((D - deg)*60)-min)*60),2)
+        Dg = degrees(atan(abs(D/L)))
+        deg = int(Dg)
+        min = int((Dg - deg)*60)
+        sec = round(((((Dg - deg)*60)-min)*60),2)
         b = str(deg) + "-" + str(min) + "-" + str(sec)
         NB = "N " + str(b) + " W"
     elif L < 0 and D < 0:
-        D = degrees(atan(abs(D/L)))
-        deg = int(D)
-        min = int((D - deg)*60)
-        sec = round(((((D - deg)*60)-min)*60),2)
+        Dg = degrees(atan(abs(D/L)))
+        deg = int(Dg)
+        min = int((Dg - deg)*60)
+        sec = round(((((Dg - deg)*60)-min)*60),2)
         b = str(deg) + "-" + str(min) + "-" + str(sec)
         NB = "S " + str(b) + " W"
     elif L < 0 and D > 0:
-        D = degrees(atan(abs(D/L)))
-        deg = int(D)
-        min = int((D - deg)*60)
-        sec = round(((((D - deg)*60)-min)*60),2)
+        Dg = degrees(atan(abs(D/L)))
+        deg = int(Dg)
+        min = int((Dg - deg)*60)
+        sec = round(((((Dg - deg)*60)-min)*60),2)
         b = str(deg) + "-" + str(min) + "-" + str(sec)
         NB = "S " + str(b) + " E"
     elif L== 0 and D > 0:
@@ -182,7 +182,6 @@ def AdjBearing(L, D):
     return NB
 
 # title of the Activity
-print() 
 color_print("MACHINE EXERCISE 3: Balancing the Survey Program", TextColor.RED) 
 print()
 
@@ -198,8 +197,8 @@ while True:
     azs = input("Enter Azimuth from the South: ")
 
     if "-" in azs:
-        degrees, minutes, seconds = azs.split("-")
-        azs = int(degrees) + (int(minutes)/60) + (float(seconds)/3600)
+        degrs, minutes, seconds = azs.split("-")
+        azs = int(degrs) + (int(minutes)/60) + (float(seconds)/3600)
     else:
         azs = float(azs) % 360
 
@@ -239,7 +238,7 @@ while True:
             DepSum += line[4]
 
         LEC = sqrt((pow(LatSum, 2)) + (pow(DepSum,2)))
-        REC = round((abs(Dis/LEC)), -3)
+        REC = round((abs(Dis/LEC)), -2)
 
     # Calculate Corrections
         for i in range(len(lines)):
@@ -276,7 +275,6 @@ while True:
         break
 
 # PRINT Line Description Table
-print()
 color_print ("{:-^88}".format("-----------------------"), TextColor.BLUE)
 
 color_print (("{: ^5} {: ^6} {: ^5} {: ^7} {: ^5} {: ^15} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5} ". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ", "Latitude", " ", "Departure", " ", "cLat", " ", "cDep", " ")),TextColor.CYAN)
@@ -288,14 +286,7 @@ for line in lines:
 color_print ("{:-^88}".format("-----------------------"), TextColor.BLUE)
 print()
 
-# PRINT the Linear Error of Closure and REC
-print()
-print("LEC: " + str(LEC))
-print("REC: " + "1 : " + str(REC))
-print()
-
 # CORRECTIONS and Adjuseted Lat-Dep TABLE
-print()
 color_print ("{:-^92}".format("-----------------------"), TextColor.BLUE)
 
 color_print(("{: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format(" ", "LINE", " ", "cLat", " ", "cDep", " ", "Adj Lat", " ", "Adj Dep", " ")), TextColor.CYAN)
@@ -307,8 +298,14 @@ for corr in corrs:
 color_print ("{:-^92}".format("-----------------------"), TextColor.BLUE)
 print()
 
-# LOT DESCRIPTION TABLE - FINAL OUTPUT
+# PRINT the Linear Error of Closure and REC
+color_print("LEC: ", TextColor.BLUE)
+color_print(str(LEC), TextColor.CYAN)
+color_print("REC: " , TextColor.BLUE)
+color_print("1 : " + str(REC), TextColor.CYAN)
 print()
+
+# LOT DESCRIPTION TABLE - FINAL OUTPUT
 color_print ("{:-^77}".format("-----------------------"), TextColor.BLUE)
 
 color_print(("{: ^5} {: ^15} {: ^5} {: ^15} {: ^5} {: ^20} {: ^5}". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ")), TextColor.CYAN)
