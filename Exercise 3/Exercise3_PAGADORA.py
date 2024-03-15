@@ -182,8 +182,8 @@ def AdjBearing(L, D):
     return NB
 
 # title of the Activity
-color_print("MACHINE EXERCISE 3: Balancing the Survey Program", TextColor.RED) 
 print()
+color_print("MACHINE EXERCISE 3: Balancing the Survey Program", TextColor.RED) 
 
 # MAIN LOOP "Flow / Scheme of the Code"
 while True:
@@ -316,4 +316,4 @@ for Lot_Description in LotDesc:
 color_print ("{:-^77}".format("-----------------------"), TextColor.BLUE)
 print()
 
-color_print ("{: ^92}".format("~ END ~"), TextColor.RED)
+color_print ("{: ^77}".format("~ END ~"), TextColor.RED)
