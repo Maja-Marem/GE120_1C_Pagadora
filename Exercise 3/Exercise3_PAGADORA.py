@@ -127,12 +127,12 @@ def getcdep(d, Dis, dep):
     return corD
 
 def BalL(Lat, corL):
-    'Balances thhe Latitudes to get the Adjusted Lat-Values'
+    'Balances the Latitudes to get the Adjusted Lat-Values'
     AdjL = corL + Lat
     return AdjL
 
 def BalD(Dep, corD):
-    'Balances thhe Departure to get the Adjusted Dep-Values'
+    'Balances the Departure to get the Adjusted Dep-Values'
     AdjD = Dep + corD
     return AdjD
 
