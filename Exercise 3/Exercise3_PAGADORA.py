@@ -183,7 +183,7 @@ def AdjBearing(L, D):
 
 # title of the Activity
 print()
-color_print("MACHINE EXERCISE 3: Balancing the Survey Program", TextColor.RED) 
+color_print("MACHINE EXERCISE 3: Balancing the Survey", TextColor.RED) 
 
 # MAIN LOOP "Flow / Scheme of the Code"
 while True:
