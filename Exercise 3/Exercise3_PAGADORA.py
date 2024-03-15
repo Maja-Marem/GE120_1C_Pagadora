@@ -299,9 +299,9 @@ color_print ("{:-^92}".format("-----------------------"), TextColor.BLUE)
 print()
 
 # PRINT the Linear Error of Closure and REC
-color_print("LEC: ", TextColor.BLUE)
+color_print("LEC: ", TextColor.RED)
 color_print(str(LEC), TextColor.CYAN)
-color_print("REC: " , TextColor.BLUE)
+color_print("REC: " , TextColor.RED)
 color_print("1 : " + str(REC), TextColor.CYAN)
 print()
 
