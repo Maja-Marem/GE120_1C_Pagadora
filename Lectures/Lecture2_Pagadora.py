@@ -7,7 +7,7 @@ print("wazzup"+" GE120")
 
 print(type("STRING"))
 print(type(54))
-print(type(3,14515))
+print(type(3.14515))
 print(type(1+4))
 print(type(float(54)))
 
@@ -18,7 +18,7 @@ y=13
 
 # Arithmetic opperations
 print(x + y)
-print(x  y)
+print(x - y)
 print(x * y)
 print(x / y)
 print(x // y)
