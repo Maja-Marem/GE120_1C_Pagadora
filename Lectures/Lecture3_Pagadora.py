@@ -142,3 +142,5 @@ while rec <= 5000:
 
 print("PASOK NA REC")
 print("-------END-----")
+
+help(len)
