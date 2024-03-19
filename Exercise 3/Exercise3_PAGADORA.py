@@ -198,7 +198,7 @@ while True:
 
     if "-" in azs:
         degrs, minutes, seconds = azs.split("-")
-        azs = int(degrs) + (int(minutes)/60) + (float(seconds)/3600)
+        azs = (int(degrs) + (int(minutes)/60) + (float(seconds)/3600)) % 360
     else:
         azs = float(azs) % 360
 
