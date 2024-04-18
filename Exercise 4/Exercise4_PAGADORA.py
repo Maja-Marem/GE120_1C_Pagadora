@@ -4,6 +4,8 @@ Maja Marem Jillzam B. Pagadora
 2023-04953
 BS Geodetic Engineering
 """
+
+
 # constants 
 "set variables as initial quantity in loop"
 
@@ -13,26 +15,33 @@ Dis = 0
 LatSum = 0
 DepSum = 0
 
+
+
 # lists used 
+
 "Storage Data Base"
 
 lines = []
+Corr = []
+
 
 
 # Imports "Relevant functions outside python"
+
 from math import cos, sin, atan, radians, degrees, sqrt
 
 
-# class 
-"spcified classifications for color_print"
 
-class TextColor:
+# class 
+
+class TextColor: #"spcified classifications for color_print"
     RED = '\033[91m'
     BLUE = '\033[94m'
     CYAN = '\033[96m'
     END = '\033[0m'
 
-class Line:
+
+class Line: # line descriptions - distance bearing, lat-dep
     def __init__(self, distance, azs):
         self.distance = distance
         self.azs = azs
@@ -99,8 +108,9 @@ class Line:
             dms = str(degs) + "-" + str(mins) + "-" + str(secs)
             bearing = "S " + str(dms) + " E"
         return bearing
-    
-class Cardinal(Line):
+
+
+class Cardinal(Line): #bearing of lines if azs divisible by 90"
     def __init__(self, distance, azs):
         super().__init__(distance, azs)
 
@@ -117,12 +127,27 @@ class Cardinal(Line):
             bearing = "EWAN KO"
         return bearing
         
+class Corrections(Line): # corrections in balancing the survey
+    def __init__(self, distance, azs, LatSum, DepSum, Dis):
+        super().__init__(distance, azs)
+        self.LatSum = LatSum
+        self.DepSum = DepSum
+        self.Dis = Dis
+
+    def corrLat(self):
+        corrLat = -(distance/Dis)*LatSum
+        return corrLat
     
-# Functions
-"Set Functions catered to the Machine Exercise"
+    def corrDep(self):
+        corrDep = -(distance/Dis)*DepSum
+        return corrDep
+
+# Functions Set Functions catered to the Machine Exercise
 
 def color_print(text, color):
-    'print colored text: text, color'
+    '''
+    print colored text: text, color
+    '''
     print(color + text + TextColor.END)
 
 def floatInput(prompt):
@@ -132,25 +157,28 @@ def floatInput(prompt):
     prompt = float(input(prompt))
     return prompt
 
+
+
 # title of the Activity
 print()
 color_print("MACHINE EXERCISE 4: Balancing the Survey using classes", TextColor.RED) 
 
-# MAIN LOOP "Flow / Scheme of the Code"
-while True:
 
-# Line Description  
-    'line from Point to Point, Distance, Azimuth/Bearing'
+
+# "MAIN LOOP Flow / Scheme of the Code"
+
+while True:
     print()
+
+# Line Descriptions(line from Point to Point, Distance, Azimuth/Bearing')
     color_print("LINE " + str(Start) + "-" + str(End), TextColor.CYAN)
 
-    distance =floatInput("Enter Line Distance: ")
+    distance = floatInput("Enter Line Distance: ")
     azs = input("Enter Azimuth from the South: ")
 
     if "-" in azs:
         degrs, minutes, seconds = azs.split("-")
         azs = float((int(degrs) + (int(minutes)/60) + (float(seconds)/3600))) % 360
-       
     else:
         azs = float(azs) % 360
 
@@ -163,8 +191,8 @@ while True:
     DepSum += line.departure()
     Dis += float(line.distance)
 
-# line lists - preBalancing lot description 
-    'listing / storing line descriptions'
+# line lists'listing / storing line descriptions'
+
     lines.append((str(Start) + "-" + str(End), line.distance, line.bearing(), line.latitude(), line.departure()))
 
 # Continuation / End of Loop 'the loop shall continue if:..., else: break'
@@ -187,6 +215,12 @@ while True:
 LEC = sqrt((pow(LatSum, 2)) + (pow(DepSum,2)))
 REC = round((abs(Dis/LEC)), -2)
 
+#  BALANCING THE SURVEY
+
+Correction = Corrections(distance, azs, LatSum, DepSum, Dis)
+Corr.append((Correction.corrLat(), Correction.corrDep()))
+
+
 # PRINT Line Description Table
 color_print ("{:-^88}".format("-----------------------"), TextColor.BLUE)
 
@@ -200,16 +234,17 @@ for line in lines:
 color_print ("{:-^88}".format("-----------------------"), TextColor.BLUE)
 print()
 
-
+print ()
 
 # PRINT the Linear Error of Closure and REC
-color_print("LEC: ", TextColor.RED)
-color_print(str(LEC), TextColor.CYAN)
-color_print("REC: " , TextColor.RED)
-color_print("1 : " + str(REC), TextColor.CYAN)
-print()
+print("LEC: "+ str(LEC))
+print("REC: "+ "1 : " + str(REC))
 
 # LOT DESCRIPTION TABLE - FINAL OUTPUT
+print (Corr[0])
+print (Corr[1])
+color_print ("ADJUST LOT DESCRIPTION", TextColor.RED)
+
 color_print ("{:-^77}".format("-----------------------"), TextColor.BLUE)
 
 color_print(("{: ^5} {: ^15} {: ^5} {: ^15} {: ^5} {: ^20} {: ^5}". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ")), TextColor.CYAN)
