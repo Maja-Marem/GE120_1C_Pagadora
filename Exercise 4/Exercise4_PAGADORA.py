@@ -15,24 +15,17 @@ Dis = 0
 LatSum = 0
 DepSum = 0
 
-
-
-# lists used 
-
-"Storage Data Base"
+# lists used  "Storage Data Base"
 
 lines = []
-Corr = []
-
+LotDesc = []
 
 
 # Imports "Relevant functions outside python"
 
 from math import cos, sin, atan, radians, degrees, sqrt
 
-
-
-# class 
+# class (object based programs)
 
 class TextColor: #"spcified classifications for color_print"
     RED = '\033[91m'
@@ -57,7 +50,7 @@ class Line: # line descriptions - distance bearing, lat-dep
         '''
         latitude = - distance*cos(radians(azs))
         return latitude
-    
+
     def departure(self):
         '''
         Calculates the Departure of the line using the set parameters
@@ -127,22 +120,72 @@ class Cardinal(Line): #bearing of lines if azs divisible by 90"
             bearing = "EWAN KO"
         return bearing
         
-class Corrections(Line): # corrections in balancing the survey
+class Adjusted(Line): # BALANCING THE SURVEY
     def __init__(self, distance, azs, LatSum, DepSum, Dis):
         super().__init__(distance, azs)
         self.LatSum = LatSum
         self.DepSum = DepSum
         self.Dis = Dis
 
-    def corrLat(self):
+    def NewDistance(self):
+        '''
+        cALCULATING THE ADJUSTED DISTANCES
+        parameters: distance of a line, total distance of the traverse, azimuth, latsum and depsum
+        '''
         corrLat = -(distance/Dis)*LatSum
-        return corrLat
-    
-    def corrDep(self):
+        AdjLat = corrLat + (- distance*cos(radians(azs)))
         corrDep = -(distance/Dis)*DepSum
-        return corrDep
+        AdjDep = corrDep + (- distance*sin(radians(azs)))
+        Dist_new = round(sqrt((pow(AdjLat,2)) + (pow(AdjDep,2))), 3)
+        return Dist_new
     
-class Adjusted(Corrections):
+    def NewBearing(self):
+        '''
+        CALCULATING THE ADJUSTED BEARINGS
+        parameters: distance of a line, total distance of the traverse, azimuth, latsum and depsum
+        '''
+        corrLat = -(distance/Dis)*LatSum
+        L = corrLat + (- distance*cos(radians(azs)))
+        corrDep = -(distance/Dis)*DepSum
+        D = corrDep + (- distance*sin(radians(azs)))
+        if L> 0 and D > 0:
+            Dg = degrees(atan(abs(D/L)))
+            deg = int(Dg)
+            min = int((Dg - deg)*60)
+            sec = round(((((Dg - deg)*60)-min)*60),2)
+            b = str(deg) + "-" + str(min) + "-" + str(sec)
+            NB = "N " + str(b) + " E"
+        elif L > 0 and D < 0:
+            Dg = degrees(atan(abs(D/L)))
+            deg = int(Dg)
+            min = int((Dg - deg)*60)
+            sec = round(((((Dg - deg)*60)-min)*60),2)
+            b = str(deg) + "-" + str(min) + "-" + str(sec)
+            NB = "N " + str(b) + " W"
+        elif L < 0 and D < 0:
+            Dg = degrees(atan(abs(D/L)))
+            deg = int(Dg)
+            min = int((Dg - deg)*60)
+            sec = round(((((Dg - deg)*60)-min)*60),2)
+            b = str(deg) + "-" + str(min) + "-" + str(sec)
+            NB = "S " + str(b) + " W"
+        elif L < 0 and D > 0:
+            Dg = degrees(atan(abs(D/L)))
+            deg = int(Dg)
+            min = int((Dg - deg)*60)
+            sec = round(((((Dg - deg)*60)-min)*60),2)
+            b = str(deg) + "-" + str(min) + "-" + str(sec)
+            NB = "S " + str(b) + " E"
+        elif L== 0 and D > 0:
+            NB = "Due East"
+        elif L == 0 and D < 0:
+            NB = "Due West"
+        elif L > 0 and D == 0:
+            NB = "Due North"
+        else:
+            NB = "Due South"
+        return NB
+
 
 # Functions Set Functions catered to the Machine Exercise
 
@@ -213,14 +256,15 @@ while True:
         break
 
 #  LEC and REC
-
 LEC = sqrt((pow(LatSum, 2)) + (pow(DepSum,2)))
 REC = round((abs(Dis/LEC)), -2)
 
 #  BALANCING THE SURVEY
 
-Correction = Corrections(distance, azs, LatSum, DepSum, Dis)
-Corr.append((Correction.corrLat(), Correction.corrDep()))
+New = Adjusted( distance, azs, LatSum, DepSum, Dis)
+
+for i in range(len(lines)):
+    LotDesc.append((lines[i][0], New.NewDistance(), New.NewBearing()))
 
 
 # PRINT Line Description Table
@@ -243,16 +287,15 @@ print("LEC: "+ str(LEC))
 print("REC: "+ "1 : " + str(REC))
 
 # LOT DESCRIPTION TABLE - FINAL OUTPUT
-print (Corr[0])
-print (Corr[1])
-color_print ("ADJUST LOT DESCRIPTION", TextColor.RED)
+print()
+color_print ("{: ^77}".format("ADJUSTED LOT DESCRIPTION"), TextColor.RED)
 
 color_print ("{:-^77}".format("-----------------------"), TextColor.BLUE)
 
 color_print(("{: ^5} {: ^15} {: ^5} {: ^15} {: ^5} {: ^20} {: ^5}". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ")), TextColor.CYAN)
 print ("{:-^77}".format("-----------------------"))
-for Lot_Description in LotDesc:
-    print("{: ^5} {: ^15} {: ^5} {: ^15} {: ^5} {: ^20} {: ^5}". format("|", Lot_Description[0], "|", round(Lot_Description[1],3), "|", Lot_Description[2], "|"))
+for New in LotDesc:
+    print("{: ^5} {: ^15} {: ^5} {: ^15} {: ^5} {: ^20} {: ^5}". format("|", New[0], "|", New[1], "|", New[2], "|"))
 
 color_print ("{:-^77}".format("-----------------------"), TextColor.BLUE)
 print()
