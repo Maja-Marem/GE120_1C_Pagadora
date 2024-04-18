@@ -141,6 +141,8 @@ class Corrections(Line): # corrections in balancing the survey
     def corrDep(self):
         corrDep = -(distance/Dis)*DepSum
         return corrDep
+    
+class Adjusted(Corrections):
 
 # Functions Set Functions catered to the Machine Exercise
 
