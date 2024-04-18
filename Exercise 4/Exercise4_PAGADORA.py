@@ -240,6 +240,12 @@ while True:
 
     lines.append((str(Start) + "-" + str(End), line.distance, line.bearing(), line.latitude(), line.departure()))
 
+
+#  BALANCING THE SURVEY
+
+    New = Adjusted( distance, azs, LatSum, DepSum, Dis)
+    LotDesc.append((str(Start) + "-" + str(End), New.NewDistance(), New.NewBearing()))
+
 # Continuation / End of Loop 'the loop shall continue if:..., else: break'
     YN = (input("Add a New line? "))
     if YN.lower() == "yes" or YN.lower() == "y"or YN.lower() == "ye" or YN.lower() == "yah" or YN.lower() == "yeah":
@@ -259,12 +265,6 @@ while True:
 LEC = sqrt((pow(LatSum, 2)) + (pow(DepSum,2)))
 REC = round((abs(Dis/LEC)), -2)
 
-#  BALANCING THE SURVEY
-
-New = Adjusted( distance, azs, LatSum, DepSum, Dis)
-
-for i in range(len(lines)):
-    LotDesc.append((lines[i][0], New.NewDistance(), New.NewBearing()))
 
 
 # PRINT Line Description Table
