@@ -121,11 +121,13 @@ class Cardinal(Line): #bearing of lines if azs divisible by 90"
         return bearing
         
 class Adjusted(Line): # BALANCING THE SURVEY
-    def __init__(self, distance, azs, LatSum, DepSum, Dis):
+    def __init__(self, distance, azs, LatSum, DepSum, Dis, lat, dep):
         super().__init__(distance, azs)
         self.LatSum = LatSum
         self.DepSum = DepSum
         self.Dis = Dis
+        self.lat = lat
+        self.dep = dep
 
     def NewDistance(self):
         '''
@@ -133,9 +135,9 @@ class Adjusted(Line): # BALANCING THE SURVEY
         parameters: distance of a line, total distance of the traverse, azimuth, latsum and depsum
         '''
         corrLat = -(distance/Dis)*LatSum
-        AdjLat = corrLat + (- distance*cos(radians(azs)))
+        AdjLat = corrLat + lat
         corrDep = -(distance/Dis)*DepSum
-        AdjDep = corrDep + (- distance*sin(radians(azs)))
+        AdjDep = corrDep + dep
         Dist_new = round(sqrt((pow(AdjLat,2)) + (pow(AdjDep,2))), 3)
         return Dist_new
     
@@ -145,9 +147,9 @@ class Adjusted(Line): # BALANCING THE SURVEY
         parameters: distance of a line, total distance of the traverse, azimuth, latsum and depsum
         '''
         corrLat = -(distance/Dis)*LatSum
-        L = corrLat + (- distance*cos(radians(azs)))
+        L = corrLat + lat
         corrDep = -(distance/Dis)*DepSum
-        D = corrDep + (- distance*sin(radians(azs)))
+        D = corrDep + dep
         if L> 0 and D > 0:
             Dg = degrees(atan(abs(D/L)))
             deg = int(Dg)
@@ -241,11 +243,6 @@ while True:
     lines.append((str(Start) + "-" + str(End), line.distance, line.bearing(), line.latitude(), line.departure()))
 
 
-#  BALANCING THE SURVEY
-
-    New = Adjusted( distance, azs, LatSum, DepSum, Dis)
-    LotDesc.append((str(Start) + "-" + str(End), New.NewDistance(), New.NewBearing()))
-
 # Continuation / End of Loop 'the loop shall continue if:..., else: break'
     YN = (input("Add a New line? "))
     if YN.lower() == "yes" or YN.lower() == "y"or YN.lower() == "ye" or YN.lower() == "yah" or YN.lower() == "yeah":
@@ -263,8 +260,17 @@ while True:
 
 #  LEC and REC
 LEC = sqrt((pow(LatSum, 2)) + (pow(DepSum,2)))
-REC = round((abs(Dis/LEC)), -2)
+REC = ((abs(Dis/LEC))//100)*100
 
+
+#  BALANCING THE SURVEY
+
+for i in range(len(lines)):
+    lat = lines[i][3]
+    dep = lines[i][4]
+    
+    New = Adjusted( distance, azs, LatSum, DepSum, Dis, lat, dep)
+    LotDesc.append((str(Start) + "-" + str(End), New.NewDistance(), New.NewBearing()))
 
 
 # PRINT Line Description Table
@@ -293,7 +299,9 @@ color_print ("{: ^77}".format("ADJUSTED LOT DESCRIPTION"), TextColor.RED)
 color_print ("{:-^77}".format("-----------------------"), TextColor.BLUE)
 
 color_print(("{: ^5} {: ^15} {: ^5} {: ^15} {: ^5} {: ^20} {: ^5}". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ")), TextColor.CYAN)
+
 print ("{:-^77}".format("-----------------------"))
+
 for New in LotDesc:
     print("{: ^5} {: ^15} {: ^5} {: ^15} {: ^5} {: ^20} {: ^5}". format("|", New[0], "|", New[1], "|", New[2], "|"))
 
