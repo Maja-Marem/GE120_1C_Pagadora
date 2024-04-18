@@ -33,11 +33,11 @@ class TextColor:
     END = '\033[0m'
 
 class Line:
-    def __int__(self, distance, azimuth):
+    def __init__(self, distance, azs):
         self.distance = distance
-        self.azimuth = azimuth
+        self.azs = azs
 
-    def getlatitude(self):
+    def latitude(self):
         '''
         Calculates the Latitude of the line using the set parameters
 
@@ -46,10 +46,10 @@ class Line:
 
         Parameters: distance, azimuth
         '''
-        latitude = - self.distance*cos(radians(self.azimuth))
+        latitude = - distance*cos(radians(azs))
         return latitude
     
-    def getDeparture(self):
+    def departure(self):
         '''
         Calculates the Departure of the line using the set parameters
 
@@ -58,10 +58,10 @@ class Line:
 
         Parameters: distance, azimuth
         '''
-        departure = - self.distance*sin(radians(self.azimuth))
+        departure = - distance*sin(radians(azs))
         return departure
     
-    def azimuthToBearing(self):
+    def bearing(self):
         '''
         Converts Azimuth from the South to Bearing
 
@@ -69,6 +69,7 @@ class Line:
 
         Parameters: azimuth
         '''
+
         if azs > 0 and azs < 90:
             az = azs
             degs = int(az)
@@ -100,18 +101,24 @@ class Line:
         return bearing
     
 class Cardinal(Line):
-    def azimuthToBearing(self):
+    def __init__(self, distance, azs):
+        super().__init__(distance, azs)
+
+    def bearing(self):
         if azs == 0:
             bearing = "Due South"
         elif azs == 90:
             bearing = "Due West"
         elif azs == 180:
             bearing = "Due North"
-        else:
+        elif azs == 270:
             bearing = "Due East"
-        return super().azimuthToBearing()
-
-# Functions - MAIN CODE
+        else:
+            bearing = "EWAN KO"
+        return bearing
+        
+    
+# Functions
 "Set Functions catered to the Machine Exercise"
 
 def color_print(text, color):
@@ -127,7 +134,7 @@ def floatInput(prompt):
 
 # title of the Activity
 print()
-color_print("MACHINE EXERCISE 3: Balancing the Survey", TextColor.RED) 
+color_print("MACHINE EXERCISE 4: Balancing the Survey using classes", TextColor.RED) 
 
 # MAIN LOOP "Flow / Scheme of the Code"
 while True:
@@ -137,25 +144,28 @@ while True:
     print()
     color_print("LINE " + str(Start) + "-" + str(End), TextColor.CYAN)
 
-    dist =floatInput("Enter Line Distance: ")
-    azs = floatInput("Enter Azimuth from the South: ")
+    distance =floatInput("Enter Line Distance: ")
+    azs = input("Enter Azimuth from the South: ")
 
     if "-" in azs:
         degrs, minutes, seconds = azs.split("-")
-        azs = (int(degrs) + (int(minutes)/60) + (float(seconds)/3600)) % 360
+        azs = float((int(degrs) + (int(minutes)/60) + (float(seconds)/3600))) % 360
+       
     else:
         azs = float(azs) % 360
 
-# LatDep Bearing
-    'Calculating the Latitude, Departure and Bearing using set functions'
-    B = azimuthToBearing(azs)
-    lat = getLatitude(dist, azs)
-    dep = getDeparture (dist, azs)
+    if azs % 90 == 0:
+        line = Cardinal(distance, azs)
+    else:
+        line = Line(distance, azs)
+
+    LatSum += line.latitude()
+    DepSum += line.departure()
+    Dis += float(line.distance)
 
 # line lists - preBalancing lot description 
     'listing / storing line descriptions'
-    line = [str(Start) + "-" + str(End) , dist, B, lat, dep]
-    lines.append(line)
+    lines.append((str(Start) + "-" + str(End), line.distance, line.bearing(), line.latitude(), line.departure()))
 
 # Continuation / End of Loop 'the loop shall continue if:..., else: break'
     YN = (input("Add a New line? "))
@@ -169,59 +179,18 @@ while True:
             Start = Start + 1
             End = End + 1
             continue
-
     else:  
-    # Calculate LEC and REC
-        for line in lines:
-            Dis += line[1]
-
-        for line in lines:
-            LatSum += line[3]
-
-        for line in lines:
-            DepSum += line[4]
-
-        LEC = sqrt((pow(LatSum, 2)) + (pow(DepSum,2)))
-        REC = round((abs(Dis/LEC)), -2)
-
-    # Calculate Corrections
-        for i in range(len(lines)):
-            cl = getclat(lines[i][1], Dis, LatSum)
-            clat.append(cl) 
-
-            cd = getcdep(lines[i][1], Dis, DepSum)
-            cdep.append(cd)
-
-        for i in range(len(lines)) and range(len(clat)):
-            AdjLat = BalL(lines[i][3], clat[i])
-            ADJLat.append(AdjLat)
-
-        for i in range(len(lines)) and range(len(cdep)):
-            AdjDep = BalD(lines[i][4], cdep[i])
-            ADJDep.append(AdjDep)
-
-        for i in range(len(lines)) and range(len(clat)) and range(len(cdep)) and range(len(ADJLat)) and range(len(ADJDep)):
-            corr = (lines[i][0], clat[i], cdep[i], ADJLat[i], ADJDep[i],)
-            corrs.append(corr)
-
-    # Adjusted Lot Description
-        for i in range(len(ADJLat)) and range(len(ADJDep)):
-            Adj_distance = AdjDist(ADJLat[i], ADJDep[i])
-            ADJDis.append(Adj_distance)
-        
-            Adj_bear = AdjBearing(ADJLat[i], ADJDep[i])
-            ADJb.append(Adj_bear)
-
-        for i in range(len(ADJLat)) and range(len(ADJDep)) and range(len(lines)):
-            Lot_Description = (lines[i][0], ADJDis[i], ADJb[i])
-            LotDesc.append(Lot_Description)
-
         break
+
+#  LEC and REC
+
+LEC = sqrt((pow(LatSum, 2)) + (pow(DepSum,2)))
+REC = round((abs(Dis/LEC)), -2)
 
 # PRINT Line Description Table
 color_print ("{:-^88}".format("-----------------------"), TextColor.BLUE)
 
-color_print (("{: ^5} {: ^6} {: ^5} {: ^7} {: ^5} {: ^15} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5} ". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ", "Latitude", " ", "Departure", " ", "cLat", " ", "cDep", " ")),TextColor.CYAN)
+color_print (("{: ^5} {: ^6} {: ^5} {: ^7} {: ^5} {: ^15} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5} ". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ", "Latitude", " ", "Departure", "" )),TextColor.CYAN)
 
 print ("{:-^88}".format("-----------------------"))
 
