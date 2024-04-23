@@ -38,7 +38,7 @@ function getLatitude(distance, azs){
 
     Parameters: distance, azimuth
     */
-    let latitude = - distance*cos(radians*azs)
+    let latitude = (- distance*cos(radians*azs))
     return latitude
 }
 function getDeparture(distance, azs){
@@ -50,7 +50,7 @@ function getDeparture(distance, azs){
 
     Parameters: distance, azimuth
     */
-    let departure = - distance*sin(radians*azs)
+    let departure = (- distance*sin(radians*azs))
     return departure 
 }
 function azimuthToBearing(azs){
@@ -84,7 +84,7 @@ function azimuthToBearing(azs){
         let mins = parseInt((az - degs)*60)
         let secs = ((((az - degs)*60)-mins)*60).toFixed(2)
         let dms = degs + "-" + mins + "-" + secs
-        let bearing = "S" + dms + "W"
+        let bearing = "N" + dms + "W"
         return bearing
     }
     else if (azs == 180){
@@ -97,7 +97,7 @@ function azimuthToBearing(azs){
         let mins = parseInt((az - degs)*60)
         let secs = ((((az - degs)*60)-mins)*60).toFixed(2)
         let dms = degs + "-" + mins + "-" + secs
-        let bearing = "S" + dms + "W"
+        let bearing = "N" + dms + "E"
         return bearing
     }  
     else if (azs == 270){
@@ -110,7 +110,7 @@ function azimuthToBearing(azs){
         let mins = parseInt((az - degs)*60)
         let secs = ((((az - degs)*60)-mins)*60).toFixed(2)
         let dms = degs + "-" + mins + "-" + secs
-        let bearing = "S" + dms + "W"
+        let bearing = "S" + dms + "E"
         return bearing
     }
     else {
@@ -119,6 +119,11 @@ function azimuthToBearing(azs){
     }
 }
 function AdjDist(distance, azs, Dis, LatSum, DepSum){
+    /*
+    Calculates the addjusted distance 
+
+    parameters: distance, azs, dis, latsum, depSum
+    */
     let lat = - distance*cos(radians*azs)
     let dep = - distance*sin(radians*azs)
     let corrLat = -(distance/Dis)*LatSum
@@ -129,7 +134,11 @@ function AdjDist(distance, azs, Dis, LatSum, DepSum){
     return Dist_new
 }
 function AdjBearing(distance, azs){
-    'Calculates the adjusted Line distance'
+    /*
+    Calculates the adjusted Line distance
+    
+    parameters; distance, azs
+    */
     let L = - distance*cos(radians*azs)
     let D = - distance*sin(radians*azs)
     if (L> 0 && D > 0) {
@@ -196,6 +205,7 @@ console.log()
 console.log("MACHINE EXERCISE 5: Balancing the Survey using JAVA SCRIPT",  ) 
 
 for (let i = 0; i < data.length; i++) {
+// LINE DESCRIPTION - APPENDED LINES
      let line = data[i]
      let distance = line[0]
      let azimuth = line[1]
@@ -204,44 +214,50 @@ for (let i = 0; i < data.length; i++) {
      let latitude = getLatitude(distance, azimuth)
      let departure = getDeparture(distance, azimuth)
 
-     lines.push(distance, bearing, latitude, departure)
-
      Dis += distance
      LatSum += latitude
      DepSum += departure 
 
      lines.push([(i+1), distance, bearing, latitude, departure])
-
-    
 }
 
+// Calculating the LEC and REC
 let LEC = sqrt((pow(LatSum, 2)) + (pow(DepSum,2)))
 let REC = floor((abs(Dis/LEC))/100)*100
 
 for (let i = 0; i < data.length; i++) {
+// gathering data for new/adjusted lot description
     let line = data[i]
     let distance = line[0]
     let azimuth = line[1]
     
     NewDist = AdjDist(distance, azimuth, Dis, LatSum, DepSum)
     NewBearing = AdjBearing(distance, azimuth)
-    LotDesc.push([(i+1), NewDist, NewBearing])
-    
+    LDes = ([(i+1), NewDist, NewBearing])
+    LotDesc.push(LDes) 
 }
+
+// print output/final output
+
 console.log()
-console.log(-)
-console.log(label)
-console.log(-)
-console.log(nums)
-console.log(-)
+console.log("---------------------------------------------------------------------------------------")
+console.log("|".padEnd(5), "LINE".padEnd(6), "|".padEnd(5), "DISTANCE".padEnd(10), "|".padEnd(5), "BEARING".padEnd(15), "|".padEnd(5), "Latitude".padEnd(10), "|".padEnd(5), "Departure".padEnd(10), "|".padEnd(5))
+console.log("---------------------------------------------------------------------------------------")
+for (var line of lines){
+    console.log("|".padEnd(5),String(line[0]).padEnd(6), "|".padEnd(5), String(line[1]).padEnd(10), "|".padEnd(5), String(line[2]).padEnd(15), "|".padEnd(5), String(line[3].toFixed(3)).padEnd(10), "|".padEnd(5), String(line[4].toFixed(3)).padEnd(10), "|".padEnd(5))
+}
+console.log("---------------------------------------------------------------------------------------")
 
 console.log()
 console.log("LEC: " + LEC)
 console.log("REC : 1:" + REC)
 
 console.log()
-console.log(-)
-console.log(label)
-console.log(-)
-console.log(nums)
-console.log(-)
+console.log("ADJUSTED LOT DESCRIPTION")
+console.log("--------------------------------------------------------")
+console.log("|".padEnd(5), "LINE".padEnd(6), "|".padEnd(5), "DISTANCE".padEnd(10), "|".padEnd(5), "BEARING".padEnd(18), "|".padEnd(5))
+console.log("--------------------------------------------------------")
+for (var LDes of LotDesc){
+    console.log("|".padEnd(5),String(LDes[0]).padEnd(6), "|".padEnd(5), String(LDes[1]).padEnd(10), "|".padEnd(5), String(LDes[2]).padEnd(18), "|".padEnd(5))
+}
+console.log("--------------------------------------------------------")
