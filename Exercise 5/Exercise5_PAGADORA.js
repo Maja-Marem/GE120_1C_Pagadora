@@ -193,6 +193,7 @@ function AdjBearing(distance, azs){
 
  // title of the Activity
 console.log()
+console.log()
 console.log("MACHINE EXERCISE 5: Balancing the Survey using JAVA SCRIPT",  ) 
 
 for (let i = 0; i < data.length; i++) {
@@ -228,5 +229,20 @@ for (let i = 0; i < data.length; i++) {
     LotDesc.push([(i+1), NewDist, NewBearing])
     
 }
+console.log()
+console.log(-)
+console.log(label)
+console.log(-)
+console.log(nums)
+console.log(-)
 
-console.log(LotDesc)
+console.log()
+console.log("LEC: " + LEC)
+console.log("REC : 1:" + REC)
+
+console.log()
+console.log(-)
+console.log(label)
+console.log(-)
+console.log(nums)
+console.log(-)
