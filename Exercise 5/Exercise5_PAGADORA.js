@@ -41,7 +41,6 @@ function getLatitude(distance, azs){
     let latitude = - distance*cos(radians*azs)
     return latitude
 }
-
 function getDeparture(distance, azs){
     /*
     Calculates the Departure of the line using the set parameters
