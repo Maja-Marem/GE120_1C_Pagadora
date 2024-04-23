@@ -5,44 +5,30 @@ Maja Marem Jillzam B. Pagadora
 BS Geodetic Engineering
 */
 
- // class  "spcified classifications for console.log"
-
  // constants  "set variables as initial quantity in loop"
+ var data = [
+     [13.23, 124.795], 
+     [15.57, 14.143], 
+     [43.36, 270.000], 
+     [23.09, 188.169], 
+     [10.99, 180.000], 
+     [41.40, 50.562], 
+ ]
+ var Dis = 0
+ var LatSum = 0
+ var DepSum = 0
+ 
+  // lists used  "Storage Data Base"
+ var lines = []
+ var LotDesc = []
 
-var Start = 1
-var End = 2
-var data = [
-    [13.23, 124.795], 
-    [15.57, 14.143], 
-    [43.36, 270.000], 
-    [23.09, 188.169], 
-    [10.99, 180.000], 
-    [41.40, 50.562], 
-]
-var lines = []
-var Dis = 0
-var LatSum = 0
-var DepSum = 0
-
- // lists used  "Storage Data Base"
-
-lines = []
-clat = []
-cdep = []
-ADJLat = []
-ADJDep = []
-corrs = []
-ADJDis = []
-ADJb = []
-LotDesc = []
 
  // Imports "Relevant functions outside python"
-from math import cos, sin, atan, radians, degrees, sqrt
+ const { abs, floor, cos, sin, atan, sqrt, pow } = Math
+ const radians = Math.PI/180
+ const degrees = 180/Math.PI
 
- // Functions - MAIN CODE
-"Set Functions catered to the Machine Exercise"
-
-
+ // Functions  "Set Functions catered to the Machine Exercise"
 function getLatitude(distance, azs){
     /*
     Calculates the Latitude of the line using the set parameters
@@ -52,7 +38,8 @@ function getLatitude(distance, azs){
 
     Parameters: distance, azimuth
     */
-    return (- distance*cos(radians(azs)))
+    let latitude = - distance*cos(radians*azs)
+    return latitude
 }
 
 function getDeparture(distance, azs){
@@ -64,8 +51,8 @@ function getDeparture(distance, azs){
 
     Parameters: distance, azimuth
     */
-    return (departure = - distance*sin(radians(azs)))
-    
+    let departure = - distance*sin(radians*azs)
+    return departure 
 }
 function azimuthToBearing(azs){
     /*
@@ -76,247 +63,166 @@ function azimuthToBearing(azs){
     Parameters: azimuth
     */
     if (azs == 0){
-        return ("Due South".toString)
+        let bearing = "Due South"
+        return bearing
     }
     else if (azs > 0 && azs < 90){
-        az = azs
-        degs = int(az)
-        mins = int((az - degs)*60)
-        secs = round(((((az - degs)*60)-mins)*60),2)
-        dms = str(degs) + "-" + str(mins) + "-" + str(secs)
-        return ("S".toString + "dms".toString + "W".toString)
+        let az = azs
+        let degs = parseInt(az)
+        let mins = parseInt((az - degs)*60)
+        let secs = ((((az - degs)*60)-mins)*60).toFixed(2)
+        let dms = degs + "-" + mins + "-" + secs
+        let bearing = "S" + dms + "W"
+        return bearing
     }
     else if (azs == 90){
-        return ("Due West".toString)
+        let bearing = "Due West"
+        return bearing
     }
     else if (azs > 90 && azs < 180){
-        az = 180 - azs
-        degs = int(az)
-        mins = int((az - degs)*60)
-        secs = round(((((az - degs)*60)-mins)*60),2)
-        dms = str(degs) + "-" + str(mins) + "-" + str(secs)
-        bearing = "N " + str(dms) + " W"
+        let az = 180 - azs
+        let degs = parseInt(az)
+        let mins = parseInt((az - degs)*60)
+        let secs = ((((az - degs)*60)-mins)*60).toFixed(2)
+        let dms = degs + "-" + mins + "-" + secs
+        let bearing = "S" + dms + "W"
+        return bearing
     }
-        
-    else if azs == 180:
-        bearing = "Due North"
-    else if azs > 180 and azs < 270:
-        az = azs - 180
-        degs = int(az)
-        mins = int((az - degs)*60)
-        secs = round(((((az - degs)*60)-mins)*60),2)
-        dms = str(degs) + "-" + str(mins) + "-" + str(secs)
-        bearing = "N " + str(dms) + " E"
-    else if azs == 270:
-        bearing = "Due East"
-    else:
-        az = 360 - azs
-        degs = int(az)
-        mins = int((az - degs)*60)
-        secs = round(((((az - degs)*60)-mins)*60),2)
-        dms = str(degs) + "-" + str(mins) + "-" + str(secs)
-        bearing = "S " + str(dms) + " E"
-    return bearing
+    else if (azs == 180){
+        let bearing = "Due North"
+        return bearing
+    }
+    else if (azs > 180 && azs < 270){
+        let az = azs - 180
+        let degs = parseInt(az)
+        let mins = parseInt((az - degs)*60)
+        let secs = ((((az - degs)*60)-mins)*60).toFixed(2)
+        let dms = degs + "-" + mins + "-" + secs
+        let bearing = "S" + dms + "W"
+        return bearing
+    }  
+    else if (azs == 270){
+        let bearing = "Due East"
+        return bearing
+    }
+    else if (azs > 270 && azs < 360){
+        let az = 360 - azs
+        let degs = parseInt(az)
+        let mins = parseInt((az - degs)*60)
+        let secs = ((((az - degs)*60)-mins)*60).toFixed(2)
+        let dms = degs + "-" + mins + "-" + secs
+        let bearing = "S" + dms + "W"
+        return bearing
+    }
+    else {
+        let bearing = "unknown"
+        return bearing
+    }
 }
-function getclat(d, Dis, lat):
-    'Calculates the Correction in Latitude of each line of the traverse'
-    corL = -(d/Dis)*lat
-    return corL
-
-function getcdep(d, Dis, dep):
-    'Calculates the Correction in Departure of a line of the traverse'
-    corD = -(d/Dis)*dep
-    return corD
-
-function BalL(Lat, corL):
-    'Balances the Latitudes to get the Adjusted Lat-Values'
-    AdjL = corL + Lat
-    return AdjL
-
-function BalD(Dep, corD):
-    'Balances the Departure to get the Adjusted Dep-Values'
-    AdjD = Dep + corD
-    return AdjD
-
-function AdjDist(LAT, DEP):
+function AdjDist(distance, lat, dep, Dis, LatSum, DepSum){
+    let corrLat = -(distance/Dis)*LatSum
+    let AdjLat = corrLat + lat
+    let corrDep = -(distance/Dis)*DepSum
+    let AdjDep = corrDep + dep
+    let Dist_new = sqrt((pow(AdjLat,2)) + (pow(AdjDep,2))).toFixed(3)
+    return Dist_new
+}
+function AdjBearing(L, D){
     'Calculates the adjusted Line distance'
-    distan = sqrt((pow(LAT,2)) + (pow(DEP,2)))
-    return distan
-
-function AdjBearing(L, D):
-    'Calculates the adjusted Line distance'
-    if L> 0 and D > 0:
-        Dg = degrees(atan(abs(D/L)))
-        deg = int(Dg)
-        min = int((Dg - deg)*60)
-        sec = round(((((Dg - deg)*60)-min)*60),2)
-        b = str(deg) + "-" + str(min) + "-" + str(sec)
-        NB = "N " + str(b) + " E"
-    else if L > 0 and D < 0:
-        Dg = degrees(atan(abs(D/L)))
-        deg = int(Dg)
-        min = int((Dg - deg)*60)
-        sec = round(((((Dg - deg)*60)-min)*60),2)
-        b = str(deg) + "-" + str(min) + "-" + str(sec)
-        NB = "N " + str(b) + " W"
-    else if L < 0 and D < 0:
-        Dg = degrees(atan(abs(D/L)))
-        deg = int(Dg)
-        min = int((Dg - deg)*60)
-        sec = round(((((Dg - deg)*60)-min)*60),2)
-        b = str(deg) + "-" + str(min) + "-" + str(sec)
-        NB = "S " + str(b) + " W"
-    else if L < 0 and D > 0:
-        Dg = degrees(atan(abs(D/L)))
-        deg = int(Dg)
-        min = int((Dg - deg)*60)
-        sec = round(((((Dg - deg)*60)-min)*60),2)
-        b = str(deg) + "-" + str(min) + "-" + str(sec)
-        NB = "S " + str(b) + " E"
-    else if L== 0 and D > 0:
-        NB = "Due East"
-    else if L == 0 and D < 0:
-        NB = "Due West"
-    else if L > 0 and D == 0:
-        NB = "Due North"
-    else:
-        NB = "Due South"
-    return NB
+    if (L> 0 && D > 0) {
+        let Dg = degrees*atan(abs(D/L))
+        let deg = parseInt(Dg)
+        let min = parseInt((Dg - deg)*60)
+        let sec = ((((Dg - deg)*60)-min)*60).toFixed(2)
+        let b = deg + "-" + min + "-" + sec
+        let NB = "N " + b + " E"
+        return NB
+    }
+    else if (L > 0 && D < 0) {
+        let Dg = degrees*atan(abs(D/L))
+        let deg = parseInt(Dg)
+        let min = parseInt((Dg - deg)*60)
+        let sec = ((((Dg - deg)*60)-min)*60).toFixed(2)
+        let b = deg + "-" + min + "-" + sec
+        let NB = "N " + b + " W"
+        return NB
+    }
+    else if (L < 0 && D < 0){
+        let Dg = degrees*atan(abs(D/L))
+        let deg = parseInt(Dg)
+        let min = parseInt((Dg - deg)*60)
+        let sec = ((((Dg - deg)*60)-min)*60).toFixed(2)
+        let b = deg + "-" + min + "-" + sec
+        let NB = "S " + b + " W"
+        return NB
+    }
+    else if (L < 0 && D > 0){
+        let Dg = degrees*atan(abs(D/L))
+        let deg = parseInt(Dg)
+        let min = parseInt((Dg - deg)*60)
+        let sec = ((((Dg - deg)*60)-min)*60).toFixed(2)
+        let b = deg + "-" + min + "-" + sec
+        let NB = "S " + b + " E"
+        return NB
+    }
+    else if (L== 0 && D > 0){
+        let NB = "Due East"
+        return NB
+    }
+    else if (L == 0  && D < 0){
+        let NB = "Due West"
+        return NB
+    }
+    else if (L > 0 && D == 0){
+        let NB = "Due North"
+        return NB
+    }
+    else if (L < 0 && D== 0) {
+       let NB = "Due South"
+       return NB
+    }
+    else{
+        let NB = "unknown"
+        return NB
+    }
+}
 
  // title of the Activity
-print()
-print("MACHINE EXERCISE 3: Balancing the Survey",  ) 
+console.log()
+console.log("MACHINE EXERCISE 5: Balancing the Survey using JAVA SCRIPT",  ) 
 
- // MAIN LOOP "Flow / Scheme of the Code"
-while True:
+for (let i = 0; i < data.length; i++) {
+     let line = data[i]
+     let distance = line[0]
+     let azimuth = line[1]
 
- // Line Description  
-    'line from Point to Point, Distance, Azimuth/Bearing'
-    print()
-    console.log("LINE " + str(Start) + "-" + str(End), console.log)
+     let bearing = azimuthToBearing(azimuth)
+     let latitude = getLatitude(distance, azimuth)
+     let departure = getDeparture(distance, azimuth)
 
-    dist =(float(input("Enter Line Distance: ")))
-    azs = input("Enter Azimuth from the South: ")
+     lines.push(distance, bearing, latitude, departure)
 
-    if "-" in azs:
-        degrs, minutes, seconds = azs.split("-")
-        azs = (int(degrs) + (int(minutes)/60) + (float(seconds)/3600)) % 360
-    else:
-        azs = float(azs) % 360
+     Dis += distance
+     LatSum += latitude
+     DepSum += departure 
 
- // LatDep Bearing
-    'Calculating the Latitude, Departure and Bearing using set functions'
-    B = azimuthToBearing(azs)
-    lat = getLatitude(dist, azs)
-    dep = getDeparture (dist, azs)
+     lines.push([(i+1), distance, bearing, latitude, departure])
+}
 
- // line lists - preBalancing lot description 
-    'listing / storing line descriptions'
-    line = [str(Start) + "-" + str(End) , dist, B, lat, dep]
-    lines.append(line)
+let LEC = sqrt((pow(LatSum, 2)) + (pow(DepSum,2)))
+let REC = floor((abs(Dis/LEC))/100)*100
 
- // Continuation / End of Loop 'the loop shall continue if:..., else: break'
-    YN = (input("Add a New line? "))
-    if YN.lower() == "yes" or YN.lower() == "y"or YN.lower() == "ye" or YN.lower() == "yah" or YN.lower() == "yeah":
-        typ = (input("Will the new line be the closing line of the traverse ? "))
-        if typ.lower() == "yes" or typ.lower() == "y" or typ.lower() == "ye" or typ.lower() == "yah" or typ.lower() == "yeah":
-            Start = Start + 1
-            End =  1
-            continue
-        else :
-            Start = Start + 1
-            End = End + 1
-            continue
+for (let i = 0; i < data.length; i++){
+    let DisT = Dis
+    let LatS = LatSum
+    let DepS = DepSum
+    let dist = lines[1][i]
+    let lat = lines[3][i]
+    let dep = lines[4][i]
 
-    else:  
-     // Calculate LEC and REC
-        for line in lines:
-            Dis += line[1]
+    NewDist = AdjDist(dist, lat, dep, DisT, LatS, DepS)
+    NewBearing = AdjBearing(lat, dep)
+    LotDesc.push([(i+1), NewDist, NewBearing])
+}
 
-        for line in lines:
-            LatSum += line[3]
-
-        for line in lines:
-            DepSum += line[4]
-
-        LEC = sqrt((pow(LatSum, 2)) + (pow(DepSum,2)))
-        REC = round((abs(Dis/LEC)), -2)
-
-     // Calculate Corrections
-        for i in range(len(lines)):
-            cl = getclat(lines[i][1], Dis, LatSum)
-            clat.append(cl) 
-
-            cd = getcdep(lines[i][1], Dis, DepSum)
-            cdep.append(cd)
-
-        for i in range(len(lines)) and range(len(clat)):
-            AdjLat = BalL(lines[i][3], clat[i])
-            ADJLat.append(AdjLat)
-
-        for i in range(len(lines)) and range(len(cdep)):
-            AdjDep = BalD(lines[i][4], cdep[i])
-            ADJDep.append(AdjDep)
-
-        for i in range(len(lines)) and range(len(clat)) and range(len(cdep)) and range(len(ADJLat)) and range(len(ADJDep)):
-            corr = (lines[i][0], clat[i], cdep[i], ADJLat[i], ADJDep[i],)
-            corrs.append(corr)
-
-     // Adjusted Lot Description
-        for i in range(len(ADJLat)) and range(len(ADJDep)):
-            Adj_distance = AdjDist(ADJLat[i], ADJDep[i])
-            ADJDis.append(Adj_distance)
-        
-            Adj_bear = AdjBearing(ADJLat[i], ADJDep[i])
-            ADJb.append(Adj_bear)
-
-        for i in range(len(ADJLat)) and range(len(ADJDep)) and range(len(lines)):
-            Lot_Description = (lines[i][0], ADJDis[i], ADJb[i])
-            LotDesc.append(Lot_Description)
-
-        break
-
- // PRINT Line Description Table
-console.log ("{:-^88}".format("-----------------------"),  )
-
-console.log (("{: ^5} {: ^6} {: ^5} {: ^7} {: ^5} {: ^15} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5} ". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ", "Latitude", " ", "Departure", " ", "cLat", " ", "cDep", " ")), )
-
-print ("{:-^88}".format("-----------------------"))
-
-for line in lines:
-    print ("{: ^5} {: ^6} {: ^5} {: ^7} {: ^5} {: ^15} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format("|", line[0], "|", round(line[1],3), "|", line[2],"|", round(line[3],3), "|", round(line[4],3), "|"))
-
-console.log ("{:-^88}".format("-----------------------"),  )
-print()
-
- // CORRECTIONS and Adjuseted Lat-Dep TABLE
-console.log ("{:-^92}".format("-----------------------"),  )
-
-console.log(("{: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format(" ", "LINE", " ", "cLat", " ", "cDep", " ", "Adj Lat", " ", "Adj Dep", " ")),  )
-print ("{:-^92}".format("-----------------------"))
-
-for corr in corrs:
-    print("{: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5} {: ^10} {: ^5}". format("|", corr[0], "|", round(corr[1],5), "|", round(corr[2],5), "|", round(corr[3],3), "|", round(corr[4],3), "|"))
-
-console.log ("{:-^92}".format("-----------------------"),  )
-print()
-
- // PRINT the Linear Error of Closure and REC
-console.log("LEC: ",  )
-console.log(str(LEC),  )
-console.log("REC: " ,  )
-console.log("1 : " + str(REC),  )
-print()
-
- // LOT DESCRIPTION TABLE - FINAL OUTPUT
-console.log ("{:-^77}".format("-----------------------"),  )
-
-console.log(("{: ^5} {: ^15} {: ^5} {: ^15} {: ^5} {: ^20} {: ^5}". format(" ", "LINE", " ", "DISTANCE", " ", "BEARING", " ")),  )
-print ("{:-^77}".format("-----------------------"))
-for Lot_Description in LotDesc:
-    print("{: ^5} {: ^15} {: ^5} {: ^15} {: ^5} {: ^20} {: ^5}". format("|", Lot_Description[0], "|", round(Lot_Description[1],3), "|", Lot_Description[2], "|"))
-
-console.log ("{:-^77}".format("-----------------------"),  )
-print()
-
-console.log ("{: ^77}".format("~ END ~"),  )
+console.log(LotDesc)

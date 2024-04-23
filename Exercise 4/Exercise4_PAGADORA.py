@@ -270,7 +270,7 @@ for i in range(len(lines)):
     dep = lines[i][4]
     
     New = Adjusted( distance, azs, LatSum, DepSum, Dis, lat, dep)
-    LotDesc.append((str(Start) + "-" + str(End), New.NewDistance(), New.NewBearing()))
+    LotDesc.append((lines[i][0], New.NewDistance(), New.NewBearing()))
 
 
 # PRINT Line Description Table
