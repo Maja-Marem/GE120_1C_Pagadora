@@ -119,7 +119,9 @@ function azimuthToBearing(azs){
         return bearing
     }
 }
-function AdjDist(distance, lat, dep, Dis, LatSum, DepSum){
+function AdjDist(distance, azs, Dis, LatSum, DepSum){
+    let lat = - distance*cos(radians*azs)
+    let dep = - distance*sin(radians*azs)
     let corrLat = -(distance/Dis)*LatSum
     let AdjLat = corrLat + lat
     let corrDep = -(distance/Dis)*DepSum
@@ -127,8 +129,10 @@ function AdjDist(distance, lat, dep, Dis, LatSum, DepSum){
     let Dist_new = sqrt((pow(AdjLat,2)) + (pow(AdjDep,2))).toFixed(3)
     return Dist_new
 }
-function AdjBearing(L, D){
+function AdjBearing(distance, azs){
     'Calculates the adjusted Line distance'
+    let L = - distance*cos(radians*azs)
+    let D = - distance*sin(radians*azs)
     if (L> 0 && D > 0) {
         let Dg = degrees*atan(abs(D/L))
         let deg = parseInt(Dg)
@@ -207,22 +211,22 @@ for (let i = 0; i < data.length; i++) {
      DepSum += departure 
 
      lines.push([(i+1), distance, bearing, latitude, departure])
+
+    
 }
 
 let LEC = sqrt((pow(LatSum, 2)) + (pow(DepSum,2)))
 let REC = floor((abs(Dis/LEC))/100)*100
 
-for (let i = 0; i < data.length; i++){
-    let DisT = Dis
-    let LatS = LatSum
-    let DepS = DepSum
-    let dist = lines[1][i]
-    let lat = lines[3][i]
-    let dep = lines[4][i]
-
-    NewDist = AdjDist(dist, lat, dep, DisT, LatS, DepS)
-    NewBearing = AdjBearing(lat, dep)
+for (let i = 0; i < data.length; i++) {
+    let line = data[i]
+    let distance = line[0]
+    let azimuth = line[1]
+    
+    NewDist = AdjDist(distance, azimuth, Dis, LatSum, DepSum)
+    NewBearing = AdjBearing(distance, azimuth)
     LotDesc.push([(i+1), NewDist, NewBearing])
+    
 }
 
 console.log(LotDesc)
