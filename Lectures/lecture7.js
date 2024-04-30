@@ -95,5 +95,18 @@ Text
 - nesting, styling, and touch handling
 TextInput
 - inputing text into the keyboard
+Button
+- supports minimal level of customization
+- it calls a function
+- should render nicely on any platform
+Style Sheet
+- abstraction similar to CSS style sheets
+- when in doubt StackOverflow is your friend
+useState
+- Hook that allows you to have state variables in functional components
+- always used in pairs [<state>, <setState> - allows to update ]
+
+Other Reactnative Components
 
 */
+
