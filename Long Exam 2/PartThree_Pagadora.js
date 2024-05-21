@@ -22,8 +22,17 @@ Style Sheet
 - Design and Layout nung Magiging output naten
 
 similar sa Machine Exercise 6 need ng 4 na main view boxes na mag cocontain different components
-like one view for title, one for the input, one for the button, tas one den for output
+like one view for title, one for the input and the button, tas one den for output
 although pwede ren naman na isa nalang medjo mas mahirap lang sya gawin
+
+LAYOUT:
+for view witll contain the TITLE OF THE MAP
+"can also contain a short description of the app to know its purpose"
+
+second view contains the INPUT BOX and Button that will call onto the function to convert
+"inclue short description on what will happend upon clicking the button"
+
+third View contain the OUTPUT text can be in a box
 */
 
 function convertToBearing(AZS){
