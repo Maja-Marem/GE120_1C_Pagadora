@@ -1,9 +1,6 @@
 import React from 'react' //to create a state
-import { Image } from 'expo-image'; //import from react native
 import { Picker } from '@react-native-picker/picker'; //import from react native
-import { StatusBar } from 'expo-status-bar'; //import from react native
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native'; //dito lahat ng pwedeng components na ilagay
-import jett from './pictures/jett.jpg' //If want na hindi link ang pag-import ng picture (Create a folder in macaraeg-app)
 
 export default function App() {
 
@@ -76,16 +73,6 @@ export default function App() {
         <Text style={styles.titleText}> Output: </Text>
         <Text style={styles.titleText}> {outputValue} </Text>
       </View>
-        
-      <View style={styles.box4}>
-        <Image
-          style={styles.image}
-          source={jett}
-          placeholder={blurhash}
-          contentFit="cover"
-          transition={1000}
-        />
-      </View>
     </View>
   );
 }
@@ -137,11 +124,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold', 
     color: 'black'
-  },
-  image: {
-    flex: 1,
-    width: '100%',
-    backgroundColor: '#0553',
   },
   input: {
     height: '50%',
