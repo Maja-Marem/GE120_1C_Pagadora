@@ -3,8 +3,8 @@
 Procedural programming is a sequencial type of programming, meaning it is a step by step program that follows a certain order
 while Object-Oriented Programming uses classes to create a blueprint for object so that it there is no need to repeat certain steps to follow a step by step ordered programing
 
-Procedural - may pagkakasunoddunod ung prgramming, so parang like if need ule sa ibang part ung na code mo na previously i rerewrite mo sya for that part
-OOP - pwede ka gumamit ng class para if may similarity ung code in different parts di mo na need isulat/type ung buong code for it and use insted ung class(blueprint)
+Procedural - may pagkakasunoddunod ung prgramming, so parang like if need ule sa ibang part ung na code mo na previously na lagat mo na need irerewrite mo ule sya for that part
+OOP - pwede ka gumamit ng class para if may similarity ung code in different parts di mo na need isulat/type ung buong code ule for it and pwede na gamitin ung class(blueprint0 instead.
 
 2. GUI - Global User Interface 
 This are the features interacting to create and app, a system of interacctive visual components for computer software
@@ -23,7 +23,7 @@ Inheritance - dito papasok ung Superclass and Subclass
 basically Parent class and ung anak na class
 ung anak na Class or Subclass is a branch na class from super class or the parent class
 if titingnan from a puno perspective ung trunk ung parent class then nag brabranch sya sa subclasses, then as u go further up the tree mas nagiging fine ung branches similarly
-as nag inintorduce na ng subclasses mas nagiging specific ung class nayon.
+pag mas naglalayer na ung subclass (like subclass under a subclass under subclass pa ule) mas nagiging specific ung class nayon.
 
 eg. 
 Person - AcademicPerson - STEM
